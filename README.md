@@ -1,2 +1,2 @@
-# 02_Battle_Tank
+# Battle_Tank
 Open World Tank Battle with Ai controlled Tanks and a nifty UI
