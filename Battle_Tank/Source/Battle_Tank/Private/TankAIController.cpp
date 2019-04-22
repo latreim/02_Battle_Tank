@@ -6,6 +6,11 @@
 void ATankAIController::BeginPlay() {
 
     Super::BeginPlay();
+
+    if (GetControlledTank())
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Player Controller is possessing: %s"), *(GetControlledTank()->GetName()));
+    }
 }
 
 void ATankAIController::Tick(float DeltaTime) {
@@ -25,4 +30,8 @@ ATank* ATankAIController::GetControlledTank() const
 ATank* ATankAIController::GetPlayerTank() const
 {
     return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+}
+
+void ATankAIController::AimTowardsPlayer()
+{
 }
