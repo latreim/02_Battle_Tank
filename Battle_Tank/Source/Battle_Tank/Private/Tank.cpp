@@ -15,7 +15,7 @@ ATank::ATank()
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet) {
-    
+
     TankAimingComponent->SetBarrelComponent(BarrelToSet);
     Barrel = BarrelToSet;
 }
@@ -25,19 +25,23 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet) {
 }
 void ATank::Fire()
 {
-    if (!Barrel) { return; }
-    GetWorld()->SpawnActor<AProjectile>(
-        ProjectileBlueprint,
-        Barrel->GetSocketLocation(FName("Projectile")),
-        Barrel->GetSocketRotation(FName("Projectile"))
-        );
-    auto Time = GetWorld()->GetTimeSeconds();
-    UE_LOG(LogTemp, Warning, TEXT("%f - Firing Canon!"), Time);
+    bool IsFireTime = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+    
+    if (IsFireTime && Barrel)
+    {
+        auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+            ProjectileBlueprint,
+            Barrel->GetSocketLocation(FName("Projectile")),
+            Barrel->GetSocketRotation(FName("Projectile"))
+            );
 
+        Projectile->LaunchProjectile(LaunchSpeed);
+        LastFireTime = FPlatformTime::Seconds();
+    }
 }
 void ATank::AimAt(FVector HitLocation)
 {
-    TankAimingComponent->AimAt(HitLocation, LaunchSpeed);    
+    TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 // Called to bind functionality to input
