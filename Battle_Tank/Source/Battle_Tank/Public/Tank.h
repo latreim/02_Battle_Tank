@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
+class UTankMovementComponent;
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
@@ -38,7 +39,8 @@ public:
 protected:
 
     UTankAimingComponent* TankAimingComponent;
-  
+    UPROPERTY( BlueprintReadOnly )
+    UTankMovementComponent* TankMovementComponent;
 private:
     UPROPERTY(EditAnywhere, Category = Firing)
     float LaunchSpeed = 100000;
